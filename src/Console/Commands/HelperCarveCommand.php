@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace saberLiou\Whetstone\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 

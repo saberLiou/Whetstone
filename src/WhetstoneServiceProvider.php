@@ -61,11 +61,6 @@ class WhetstoneServiceProvider extends ServiceProvider
             __DIR__.'/../config/whetstone.php' => config_path('whetstone.php'),
         ], 'whetstone.config');
 
-        // Publishing the commands.
-        $this->publishes([
-            __DIR__.'/../app/Console/Commands' => app_path('Console/Commands'),
-        ], 'whetstone.commands');
-
         // Publishing the views.
         /*$this->publishes([
             __DIR__.'/../resources/views' => base_path('resources/views/vendor/saberliou'),
@@ -82,6 +77,8 @@ class WhetstoneServiceProvider extends ServiceProvider
         ], 'whetstone.views');*/
 
         // Registering package commands.
-        // $this->commands([]);
+        $this->commands([
+            Console\Commands\HelperCarveCommand::class,
+        ]);
     }
 }
