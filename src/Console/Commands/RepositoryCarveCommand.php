@@ -65,7 +65,7 @@ class RepositoryCarveCommand extends GeneratorCommand
         // written. Then, we will build the class and make the proper replacements on the
         // stub files so that it gets the correctly formatted namespace and class name.
         $this->makeDirectory($path);
-        $this->files->put($path, $this->buildClass($name, $this->option('model')));
+        $this->files->put($path, $this->buildRepository($name, $this->option('model')));
         $this->info($this->type.' carved successfully.');
     }
 
@@ -99,7 +99,7 @@ class RepositoryCarveCommand extends GeneratorCommand
      * @param  string  $model
      * @return string
      */
-    protected function buildClass($name, $model)
+    protected function buildRepository($name, $model)
     {
         $stub = $this->files->get($this->getStub());
         return $this->replaceNamespace($stub, $name)->replaceModelAndVar($stub, $model)->replaceClass($stub, $name);
