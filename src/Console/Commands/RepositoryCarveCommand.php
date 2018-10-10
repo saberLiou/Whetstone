@@ -65,7 +65,11 @@ class RepositoryCarveCommand extends GeneratorCommand
         // written. Then, we will build the class and make the proper replacements on the
         // stub files so that it gets the correctly formatted namespace and class name.
         $this->makeDirectory($path);
-        $this->files->put($path, $this->buildRepository($name, $this->option('model')));
+        $model = $this->option('model');
+        while (blank($model)) {
+            $model = $this->ask('The carving repository must bind a model, which model do you want to bind?');
+        }
+        $this->files->put($path, $this->buildRepository($name, $model));
         $this->info($this->type.' carved successfully.');
     }
 
