@@ -44,6 +44,7 @@ class WhetstoneServiceProvider extends ServiceProvider
         // Registering package commands.
         $this->commands([
             Console\Commands\HelperCarveCommand::class,
+            Console\Commands\RepositoryCarveCommand::class,
         ]);
     }
 }
