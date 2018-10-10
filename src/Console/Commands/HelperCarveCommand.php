@@ -39,6 +39,30 @@ class HelperCarveCommand extends GeneratorCommand
     }
 
     /**
+     * Execute the console command.
+     *
+     * @return bool|null
+     */
+    public function handle()
+    {
+        $name = $this->qualifyClass($this->getNameInput());
+        $path = $this->getPath($name);
+        // First we will check to see if the class already exists. If it does, we don't want
+        // to create the class and overwrite the user's code. So, we will bail out so the
+        // code is untouched. Otherwise, we will continue generating this class' files.
+        if ((! $this->hasOption('force') || ! $this->option('force')) && $this->alreadyExists($this->getNameInput())) {
+            $this->error($this->type.' already exists!');
+            return false;
+        }
+        // Next, we will generate the path to the location where this class' file should get
+        // written. Then, we will build the class and make the proper replacements on the
+        // stub files so that it gets the correctly formatted namespace and class name.
+        $this->makeDirectory($path);
+        $this->files->put($path, $this->buildClass($name));
+        $this->info($this->type.' carved successfully.');
+    }
+
+    /**
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
@@ -59,6 +83,19 @@ class HelperCarveCommand extends GeneratorCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
         return base_path(config('whetstone.roots.helper', $this->laravel->getNamespace())).str_replace('\\', '/', $name).'.php';
+    }
+
+    /**
+     * Replace the class name of the helper for the given stub.
+     *
+     * @param  string  $stub
+     * @param  string  $name
+     * @return string
+     */
+    protected function replaceClass($stub, $name)
+    {
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        return str_replace('DummyHelper', $class, $stub);
     }
 
     /**

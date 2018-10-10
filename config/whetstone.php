@@ -11,10 +11,12 @@ return [
 
     'roots' => [
         'helper' => 'App',
+        'repository' => 'App',
     ],
 
     'namespaces' => [
         'helper' => 'Helpers',
+        'repository' => 'Repositories',
     ],
 
 ];

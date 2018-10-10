@@ -1,0 +1,25 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\DummyModel;
+
+class DummyRepository
+{
+    /**
+     * The DummyModel model implementation.
+     * 
+     * @var DummyModel
+     */
+    protected $DummyModelVar;
+
+    /**
+     * Create a new DummyRepository.
+     * 
+     * @param DummyModel $DummyModelVar
+     */
+    public function __construct(DummyModel $DummyModelVar)
+    {
+        $this->DummyModelVar = $DummyModelVar;
+    }
+}
