@@ -3,9 +3,8 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
 [![Build Status][ico-travis]][link-travis]
-[![StyleCI][ico-styleci]][link-styleci]
 
-A Laravel plugin package to include self-defined php artisan make commands for creating blank Helper, Repository ..., etc.
+A Laravel plugin package to include self-defined php artisan make commands for creating blank ToolBox classes like Helper, Repository ..., etc.
 
 ## Installation
 

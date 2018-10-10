@@ -4,13 +4,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default namespaces for the stub classes
+    | Default roots and namespaces for the stub classes
     |--------------------------------------------------------------------------
-    | Root application namespace (e.g. "App") should be skipped.
+    | Stub Classes will be carved by their root and namespace into their own directory.
     */
 
+    'roots' => [
+        'helper' => 'App',
+    ],
+
     'namespaces' => [
-        'helper' => '\Helpers',
+        'helper' => 'Helpers',
     ],
 
 ];

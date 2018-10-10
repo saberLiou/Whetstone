@@ -2,6 +2,7 @@
 
 namespace saberLiou\Whetstone\Console\Commands;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
 
 class HelperCarveCommand extends GeneratorCommand
@@ -18,7 +19,7 @@ class HelperCarveCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new Helper class';
+    protected $description = 'Carve a new Helper class';
 
     /**
      * The type of class being generated.
@@ -45,6 +46,28 @@ class HelperCarveCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.config('whetstone.namespaces.helpers', '\Helpers');
+        return $rootNamespace.'\\'.config('whetstone.namespaces.helper', 'Helpers');
+    }
+
+    /**
+     * Get the destination class path.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function getPath($name)
+    {
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        return base_path(config('whetstone.roots.helper', $this->laravel->getNamespace())).str_replace('\\', '/', $name).'.php';
+    }
+
+    /**
+     * Get the root namespace for the class.
+     *
+     * @return string
+     */
+    protected function rootNamespace()
+    {
+        return config('whetstone.roots.helper', $this->laravel->getNamespace());
     }
 }
