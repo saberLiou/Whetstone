@@ -5,7 +5,7 @@ namespace saberLiou\Whetstone\Console\Commands;
 use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
 
-class HelperCarveCommand extends GeneratorCommand
+class RepositoryCarveCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
