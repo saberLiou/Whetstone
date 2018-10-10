@@ -1,0 +1,14 @@
+<?php
+
+namespace DummyNamespace;
+
+class DummyService
+{
+    /**
+     * Create a new DummyService.
+     */
+    public function __construct()
+    {
+        //
+    }
+}

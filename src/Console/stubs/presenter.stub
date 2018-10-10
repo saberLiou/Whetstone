@@ -1,0 +1,14 @@
+<?php
+
+namespace DummyNamespace;
+
+class DummyPresenter
+{
+    /**
+     * Create a new DummyPresenter.
+     */
+    public function __construct()
+    {
+        //
+    }
+}
