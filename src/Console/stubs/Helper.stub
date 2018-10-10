@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-class DummyHelper
+class DummyClass
 {
     // Create your own helper functions here.
 }

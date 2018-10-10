@@ -34,7 +34,7 @@ class HelperCarveCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/Helper.stub';
+        return __DIR__.'/../stubs/helper.stub';
     }
 
     /**
