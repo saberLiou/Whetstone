@@ -14,6 +14,7 @@ return [
         'repository' => 'App',
         'service' => 'App',
         'presenter' => 'App',
+        'view_composer' => 'App',
     ],
 
     'namespaces' => [
@@ -21,6 +22,7 @@ return [
         'repository' => 'Repositories',
         'service' => 'Services',
         'presenter' => 'Presenters',
+        'view_composer' => 'Http\ViewComposers',
     ],
 
 ];

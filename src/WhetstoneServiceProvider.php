@@ -47,6 +47,7 @@ class WhetstoneServiceProvider extends ServiceProvider
             Console\Commands\RepositoryCarveCommand::class,
             Console\Commands\ServiceCarveCommand::class,
             Console\Commands\PresenterCarveCommand::class,
+            Console\Commands\ViewComposerCarveCommand::class,
         ]);
     }
 }
