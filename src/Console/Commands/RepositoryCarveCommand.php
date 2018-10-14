@@ -81,7 +81,8 @@ class RepositoryCarveCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\\'.config('whetstone.namespaces.repository', 'Repositories');
+        $childNamespace = config('whetstone.namespaces.repository', 'Repositories');
+        return $rootNamespace.(blank($childNamespace) ? '' : '\\'.$childNamespace);
     }
 
     /**
@@ -93,7 +94,7 @@ class RepositoryCarveCommand extends GeneratorCommand
     protected function getPath($name)
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        return base_path(config('whetstone.roots.repository', $this->laravel->getNamespace())).str_replace('\\', '/', $name).'.php';
+        return base_path($this->rootNamespace()).str_replace('\\', '/', $name).'.php';
     }
 
     /**

@@ -70,7 +70,8 @@ class ServiceCarveCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\\'.config('whetstone.namespaces.service', 'Services');
+        $childNamespace = config('whetstone.namespaces.service', 'Services');
+        return $rootNamespace.(blank($childNamespace) ? '' : '\\'.$childNamespace);
     }
 
     /**
@@ -82,7 +83,7 @@ class ServiceCarveCommand extends GeneratorCommand
     protected function getPath($name)
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        return base_path(config('whetstone.roots.service', $this->laravel->getNamespace())).str_replace('\\', '/', $name).'.php';
+        return base_path($this->rootNamespace()).str_replace('\\', '/', $name).'.php';
     }
 
     /**

@@ -70,7 +70,8 @@ class ViewComposerCarveCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\\'.config('whetstone.namespaces.view_composer', 'ViewComposers');
+        $childNamespace = config('whetstone.namespaces.view_composer', 'ViewComposers');
+        return $rootNamespace.(blank($childNamespace) ? '' : '\\'.$childNamespace);
     }
 
     /**
@@ -82,7 +83,7 @@ class ViewComposerCarveCommand extends GeneratorCommand
     protected function getPath($name)
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        return base_path(config('whetstone.roots.view_composer', $this->laravel->getNamespace())).str_replace('\\', '/', $name).'.php';
+        return base_path($this->rootNamespace()).str_replace('\\', '/', $name).'.php';
     }
 
     /**

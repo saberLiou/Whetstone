@@ -70,7 +70,8 @@ class PresenterCarveCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\\'.config('whetstone.namespaces.presenter', 'Presenters');
+        $childNamespace = config('whetstone.namespaces.presenter', 'Presenters');
+        return $rootNamespace.(blank($childNamespace) ? '' : '\\'.$childNamespace);
     }
 
     /**
@@ -82,7 +83,7 @@ class PresenterCarveCommand extends GeneratorCommand
     protected function getPath($name)
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        return base_path(config('whetstone.roots.presenter', $this->laravel->getNamespace())).str_replace('\\', '/', $name).'.php';
+        return base_path($this->rootNamespace()).str_replace('\\', '/', $name).'.php';
     }
 
     /**
