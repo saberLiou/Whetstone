@@ -7,6 +7,8 @@ use Illuminate\Console\GeneratorCommand;
 
 class ServiceCarveCommand extends GeneratorCommand
 {
+    use CarveCommandTrait;
+
     /**
      * The console command name.
      *
@@ -45,12 +47,12 @@ class ServiceCarveCommand extends GeneratorCommand
      */
     public function handle()
     {
-        $name = $this->qualifyClass($this->getNameInput());
+        $name = $this->refineConflictNameForNamespace($this->qualifyClass($this->getNameInput()), 'service');
         $path = $this->getPath($name);
         // First we will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((! $this->hasOption('force') || ! $this->option('force')) && $this->alreadyExists($this->getNameInput())) {
+        if ((! $this->hasOption('force') || ! $this->option('force')) && $this->alreadyExists($name)) {
             $this->error($this->type.' already exists!');
             return false;
         }

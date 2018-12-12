@@ -7,6 +7,8 @@ use Illuminate\Console\GeneratorCommand;
 
 class RepositoryCarveCommand extends GeneratorCommand
 {
+    use CarveCommandTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -52,12 +54,12 @@ class RepositoryCarveCommand extends GeneratorCommand
      */
     public function handle()
     {
-        $name = $this->qualifyClass($this->getNameInput());
+        $name = $this->refineConflictNameForNamespace($this->qualifyClass($this->getNameInput()), 'repository');
         $path = $this->getPath($name);
         // First we will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((! $this->hasOption('force') || ! $this->option('force')) && $this->alreadyExists($this->getNameInput())) {
+        if ((! $this->hasOption('force') || ! $this->option('force')) && $this->alreadyExists($name)) {
             $this->error($this->type.' already exists!');
             return false;
         }
