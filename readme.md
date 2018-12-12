@@ -1,10 +1,16 @@
 # Whetstone
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
-[![Build Status][ico-travis]][link-travis]
+[![Total Downloads][ico-total-downloads]][link-downloads]
+[![Total Downloads][ico-monthly-downloads]][link-downloads]
+[![Total Downloads][ico-daily-downloads]][link-downloads]
 
-A Laravel plugin package to include self-defined php artisan make commands for creating blank ToolBox classes like Helper, Repository ..., etc.
+A Laravel plugin package to include self-defined php artisan make commands for creating blank ToolBox classes as below.
+- Helper
+- Presenter
+- Repository
+- Service
+- ViewComposer
 
 ## Installation
 
@@ -16,19 +22,24 @@ $ composer require saberliou/whetstone
 
 ## Usage
 
-```
+``` bash
 $ php artisan vendor:publish --provider="saberLiou\Whetstone\WhetstoneServiceProvider"
+```
+
+to decide the directory path of carved class by the namespace.
+
+## Commands
+``` bash
+$ php artisan carve:helper
+$ php artisan carve:presenter
+$ php artisan carve:repository
+$ php artisan carve:service
+$ php artisan carve:view-composer
 ```
 
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
-
-## Testing
-
-``` bash
-$ composer test
-```
 
 ## Contributing
 
@@ -41,20 +52,16 @@ If you discover any security related issues, please email saberliou@gmail.com in
 ## Credits
 
 - [saberLiou][link-author]
-- [All Contributors][link-contributors]
 
 ## License
 
 MIT. Please see the [license file](license.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/saberliou/whetstone.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/saberliou/whetstone.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/saberliou/whetstone/master.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/12345678/shield
+[ico-version]: https://img.shields.io/packagist/v/saberliou/whetstone.svg
+[ico-total-downloads]: https://img.shields.io/packagist/dt/saberliou/whetstone.svg
+[ico-monthly-downloads]: https://img.shields.io/packagist/dm/saberliou/whetstone.svg
+[ico-daily-downloads]: https://img.shields.io/packagist/dd/saberliou/whetstone.svg
 
 [link-packagist]: https://packagist.org/packages/saberliou/whetstone
 [link-downloads]: https://packagist.org/packages/saberliou/whetstone
-[link-travis]: https://travis-ci.org/saberliou/whetstone
-[link-styleci]: https://styleci.io/repos/12345678
 [link-author]: https://github.com/saberliou
-[link-contributors]: ../../contributors]
