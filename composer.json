@@ -1,6 +1,6 @@
 {
     "name": "saberliou/whetstone",
-    "description": ":description",
+    "description": "A Laravel package with console commands like `php artisan make` for generating self-defined PHP blank classes.",
     "license": "MIT",
     "authors": [
         {
