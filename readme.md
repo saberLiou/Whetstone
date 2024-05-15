@@ -5,7 +5,8 @@
 [![Total Downloads][ico-monthly-downloads]][link-downloads]
 [![Total Downloads][ico-daily-downloads]][link-downloads]
 
-A Laravel plugin package to include self-defined php artisan make commands for creating blank ToolBox classes as below.
+A Laravel package with console commands like `php artisan make` for generating self-defined PHP blank classes as below:
+
 - Helper
 - Presenter
 - Repository
@@ -16,20 +17,21 @@ A Laravel plugin package to include self-defined php artisan make commands for c
 
 Via Composer
 
-``` bash
-$ composer require saberliou/whetstone
+```bash
+$ composer require saberliou/whetstone --dev
 ```
 
 ## Usage
 
-``` bash
+```bash
 $ php artisan vendor:publish --provider="saberLiou\Whetstone\WhetstoneServiceProvider"
 ```
 
 to decide the directory path of carved class by the namespace.
 
 ## Commands
-``` bash
+
+```bash
 $ php artisan carve:helper
 $ php artisan carve:presenter
 $ php artisan carve:repository
@@ -61,7 +63,6 @@ MIT. Please see the [license file](license.md) for more information.
 [ico-total-downloads]: https://img.shields.io/packagist/dt/saberliou/whetstone.svg
 [ico-monthly-downloads]: https://img.shields.io/packagist/dm/saberliou/whetstone.svg
 [ico-daily-downloads]: https://img.shields.io/packagist/dd/saberliou/whetstone.svg
-
 [link-packagist]: https://packagist.org/packages/saberliou/whetstone
 [link-downloads]: https://packagist.org/packages/saberliou/whetstone
 [link-author]: https://github.com/saberliou
