@@ -39,6 +39,13 @@ $ php artisan carve:service
 $ php artisan carve:view-composer
 ```
 
+## Testing
+
+```sh
+$ composer install
+$ composer test
+```
+
 ## Security
 
 If you discover any security related issues, please email saberliou@gmail.com instead of using the issue tracker.
