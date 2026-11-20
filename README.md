@@ -17,13 +17,13 @@ A Laravel package with console commands like `php artisan make` for generating s
 
 Via Composer
 
-```bash
+```sh
 $ composer require saberliou/whetstone --dev
 ```
 
 ## Usage
 
-```bash
+```sh
 $ php artisan vendor:publish --provider="saberLiou\Whetstone\WhetstoneServiceProvider"
 ```
 
@@ -31,7 +31,7 @@ to decide the directory path of carved class by the namespace.
 
 ## Commands
 
-```bash
+```sh
 $ php artisan carve:helper
 $ php artisan carve:presenter
 $ php artisan carve:repository
@@ -39,25 +39,13 @@ $ php artisan carve:service
 $ php artisan carve:view-composer
 ```
 
-## Change log
-
-Please see the [changelog](changelog.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [contributing.md](contributing.md) for details and a todolist.
-
 ## Security
 
 If you discover any security related issues, please email saberliou@gmail.com instead of using the issue tracker.
 
-## Credits
-
-- [saberLiou][link-author]
-
 ## License
 
-MIT. Please see the [license file](license.md) for more information.
+[MIT](LICENSE) © saberLiou
 
 [ico-version]: https://img.shields.io/packagist/v/saberliou/whetstone.svg
 [ico-total-downloads]: https://img.shields.io/packagist/dt/saberliou/whetstone.svg
@@ -65,4 +53,3 @@ MIT. Please see the [license file](license.md) for more information.
 [ico-daily-downloads]: https://img.shields.io/packagist/dd/saberliou/whetstone.svg
 [link-packagist]: https://packagist.org/packages/saberliou/whetstone
 [link-downloads]: https://packagist.org/packages/saberliou/whetstone
-[link-author]: https://github.com/saberliou
