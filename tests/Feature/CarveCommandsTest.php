@@ -12,10 +12,10 @@ class CarveCommandsTest extends TestCase
     public function simpleCommandProvider()
     {
         return [
-            'helper' => ['carve:helper', 'helper', 'Helper', 'App/Helpers', 'App\\Helpers'],
-            'presenter' => ['carve:presenter', 'presenter', 'Presenter', 'App/Presenters', 'App\\Presenters'],
-            'service' => ['carve:service', 'service', 'Service', 'App/Services', 'App\\Services'],
-            'view composer' => ['carve:view-composer', 'view_composer', 'ViewComposer', 'App/Http/ViewComposers', 'App\\Http\\ViewComposers'],
+            'helper' => ['carve:helper', 'helper', 'Helper', 'app/Helpers', 'App\\Helpers'],
+            'presenter' => ['carve:presenter', 'presenter', 'Presenter', 'app/Presenters', 'App\\Presenters'],
+            'service' => ['carve:service', 'service', 'Service', 'app/Services', 'App\\Services'],
+            'view composer' => ['carve:view-composer', 'view_composer', 'ViewComposer', 'app/Http/ViewComposers', 'App\\Http\\ViewComposers'],
         ];
     }
 
@@ -75,7 +75,40 @@ class CarveCommandsTest extends TestCase
     /**
      * @dataProvider simpleCommandProvider
      */
-    public function testItHonoursCustomisedRootAndNamespace($command, $key, $type, $directory, $namespace)
+    public function testItCarvesIntoTheDirectoryMappedByPsr4ForACustomisedRoot($command, $key, $type, $directory, $namespace)
+    {
+        $this->setAutoloadPsr4(['App\\' => 'app/', 'Domain\\' => 'src/domain/']);
+        config([
+            'whetstone.roots.'.$key => 'Domain',
+            'whetstone.namespaces.'.$key => 'Custom\\Things',
+        ]);
+
+        $this->artisan($command, ['name' => 'Foo'])->assertExitCode(0);
+
+        $contents = $this->assertCarved('src/domain/Custom/Things/Foo.php');
+        $this->assertStringContainsString('namespace Domain\\Custom\\Things;', $contents);
+    }
+
+    /**
+     * @dataProvider simpleCommandProvider
+     */
+    public function testItCarvesIntoASubdirectoryForARootNestedUnderAPsr4Namespace($command, $key, $type, $directory, $namespace)
+    {
+        config([
+            'whetstone.roots.'.$key => 'App\\Modules',
+            'whetstone.namespaces.'.$key => 'Things',
+        ]);
+
+        $this->artisan($command, ['name' => 'Foo'])->assertExitCode(0);
+
+        $contents = $this->assertCarved('app/Modules/Things/Foo.php');
+        $this->assertStringContainsString('namespace App\\Modules\\Things;', $contents);
+    }
+
+    /**
+     * @dataProvider simpleCommandProvider
+     */
+    public function testItFallsBackToTheRootNamespaceAsDirectoryWhenNotMappedByPsr4($command, $key, $type, $directory, $namespace)
     {
         config([
             'whetstone.roots.'.$key => 'Domain',
@@ -94,7 +127,7 @@ class CarveCommandsTest extends TestCase
             ->expectsOutput('Repository carved successfully.')
             ->assertExitCode(0);
 
-        $contents = $this->assertCarved('App/Repositories/UserRepository.php');
+        $contents = $this->assertCarved('app/Repositories/UserRepository.php');
         $this->assertStringContainsString('namespace App\\Repositories;', $contents);
         $this->assertStringContainsString('use App\\User;', $contents);
         $this->assertStringContainsString('class UserRepository', $contents);
@@ -111,13 +144,13 @@ class CarveCommandsTest extends TestCase
             ->expectsOutput('Repository carved successfully.')
             ->assertExitCode(0);
 
-        $contents = $this->assertCarved('App/Repositories/PostRepository.php');
+        $contents = $this->assertCarved('app/Repositories/PostRepository.php');
         $this->assertStringContainsString('public function __construct(Post $post)', $contents);
     }
 
     public function testRepositoryRefusesToOverwriteAnExistingClass()
     {
-        $path = $this->sandbox.'/App/Repositories/UserRepository.php';
+        $path = $this->sandbox.'/app/Repositories/UserRepository.php';
         mkdir(dirname($path), 0755, true);
         file_put_contents($path, 'original');
 

@@ -2,7 +2,6 @@
 
 namespace saberLiou\Whetstone\Console\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
 
 class ServiceCarveCommand extends GeneratorCommand
@@ -74,18 +73,6 @@ class ServiceCarveCommand extends GeneratorCommand
     {
         $childNamespace = config('whetstone.namespaces.service', 'Services');
         return $rootNamespace.(blank($childNamespace) ? '' : '\\'.$childNamespace);
-    }
-
-    /**
-     * Get the destination class path.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    protected function getPath($name)
-    {
-        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
-        return base_path($this->rootNamespace()).str_replace('\\', '/', $name).'.php';
     }
 
     /**

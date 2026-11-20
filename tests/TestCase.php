@@ -47,14 +47,37 @@ abstract class TestCase extends Orchestra
     /**
      * Assert that a file was carved at the given path relative to the sandbox, and return its contents.
      *
+     * Every path segment is compared case-sensitively against the directory listing, so that
+     * the assertion also fails on case-insensitive filesystems (e.g. macOS) when the case differs.
+     *
      * @param  string  $relativePath
      * @return string
      */
     protected function assertCarved($relativePath)
     {
-        $path = $this->sandbox.'/'.$relativePath;
-        $this->assertFileExists($path);
+        $directory = $this->sandbox;
+        foreach (explode('/', $relativePath) as $segment) {
+            $this->assertContains(
+                $segment,
+                is_dir($directory) ? scandir($directory) : [],
+                "Expected [{$relativePath}] to be carved, but [{$segment}] does not exist (case-sensitive) in [{$directory}]."
+            );
+            $directory .= '/'.$segment;
+        }
 
-        return file_get_contents($path);
+        return file_get_contents($this->sandbox.'/'.$relativePath);
+    }
+
+    /**
+     * Replace the PSR-4 autoload map of the sandbox application's composer.json.
+     *
+     * @param  array  $psr4
+     * @return void
+     */
+    protected function setAutoloadPsr4(array $psr4)
+    {
+        file_put_contents($this->sandbox.'/composer.json', json_encode([
+            'autoload' => ['psr-4' => $psr4],
+        ]));
     }
 }
