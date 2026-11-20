@@ -36,10 +36,7 @@
         "laravel": {
             "providers": [
                 "saberLiou\\Whetstone\\WhetstoneServiceProvider"
-            ],
-            "aliases": {
-                "Whetstone": "saberLiou\\Whetstone\\Facades\\Whetstone"
-            }
+            ]
         }
     },
     "scripts": {
