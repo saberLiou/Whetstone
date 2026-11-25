@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use App\DummyModel;
+use NamespacedDummyModel;
 
 class DummyRepository
 {

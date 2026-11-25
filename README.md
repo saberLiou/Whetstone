@@ -32,12 +32,19 @@ to decide the directory path of carved class by the namespace.
 ## Commands
 
 ```sh
-$ php artisan carve:helper
-$ php artisan carve:presenter
-$ php artisan carve:repository
-$ php artisan carve:service
-$ php artisan carve:view-composer
+$ php artisan carve:helper {name} [--force]
+$ php artisan carve:presenter {name} [--force]
+$ php artisan carve:repository {name} [--model=] [--force]
+$ php artisan carve:service {name} [--force]
+$ php artisan carve:view-composer {name} [--force]
 ```
+
+- `name` is the class name, which may contain sub-namespaces separated by `/` or `\` (e.g. `Admin/UserService`).
+  The class is carved under the configured root and namespace (e.g. `App\Services\Admin\UserService` in `app/Services/Admin/UserService.php`).
+- `--force` overwrites the class if it already exists. Otherwise the command fails with exit code 1.
+- `--model` is the model bound to the repository, which is asked for if not given (and required with `--no-interaction`).
+  It is resolved under the application namespace (and its `Models` namespace if the `app/Models` directory exists),
+  unless it already starts with the application namespace. A leading `\` gives a fully qualified model (e.g. `--model='\Domain\Models\User'`).
 
 ## Testing
 

@@ -3,17 +3,14 @@
 namespace saberLiou\Whetstone\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
+use Symfony\Component\Console\Input\InputOption;
 
 class RepositoryCarveCommand extends GeneratorCommand
 {
-    use CarveCommandTrait;
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'carve:repository {name} {--model=}';
+    use CarveCommandTrait {
+        stubReplacements as carveStubReplacements;
+    }
 
     /**
      * The console command name.
@@ -37,6 +34,13 @@ class RepositoryCarveCommand extends GeneratorCommand
     protected $type = 'Repository';
 
     /**
+     * The fully qualified class name of the model bound to the repository.
+     *
+     * @var string
+     */
+    protected $model;
+
+    /**
      * Get the stub file for the generator.
      *
      * @return string
@@ -47,91 +51,92 @@ class RepositoryCarveCommand extends GeneratorCommand
     }
 
     /**
-     * Execute the console command.
+     * Resolve the model bound to the repository, asking for it if not given.
      *
-     * @return bool|null
+     * @param  string  $name
+     * @return bool
      */
-    public function handle()
+    protected function prepareCarving($name)
     {
-        $name = $this->refineConflictNameForNamespace($this->qualifyClass($this->getNameInput()), 'repository');
-        $path = $this->getPath($name);
-        // First we will check to see if the class already exists. If it does, we don't want
-        // to create the class and overwrite the user's code. So, we will bail out so the
-        // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((! $this->hasOption('force') || ! $this->option('force')) && $this->alreadyExists($name)) {
-            $this->error($this->type.' already exists!');
+        $model = $this->option('model');
+        if (blank($model) && ! $this->input->isInteractive()) {
+            $this->error('The model is required, please give it with the --model option.');
             return false;
         }
-        // Next, we will generate the path to the location where this class' file should get
-        // written. Then, we will build the class and make the proper replacements on the
-        // stub files so that it gets the correctly formatted namespace and class name.
-        $this->makeDirectory($path);
-        $model = $this->option('model');
         while (blank($model)) {
             $model = $this->ask('The carving repository must bind a model, which model do you want to bind?');
         }
-        $this->files->put($path, $this->buildRepository($name, $model));
-        $this->info($this->type.' carved successfully.');
+
+        $this->model = $this->qualifyModel($model);
+        if (! $this->isValidClassName($this->model)) {
+            $this->error('The model name ['.$model.'] is invalid.');
+            return false;
+        }
+        return true;
     }
 
     /**
-     * Get the default namespace for the class.
+     * Qualify the given model name.
      *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        $childNamespace = config('whetstone.namespaces.repository', 'Repositories');
-        return $rootNamespace.(blank($childNamespace) ? '' : '\\'.$childNamespace);
-    }
-
-    /**
-     * Build the class of the repository with the given name and model.
+     * A name with a leading backslash is regarded as fully qualified. Otherwise the name is
+     * resolved under the application namespace, and under its "Models" namespace if the
+     * application has a "Models" directory, unless it already starts with the application namespace.
      *
-     * @param  string  $name
      * @param  string  $model
      * @return string
      */
-    protected function buildRepository($name, $model)
+    protected function qualifyModel($model)
     {
-        $stub = $this->files->get($this->getStub());
-        return $this->replaceNamespace($stub, $name)->replaceModelAndVar($stub, $model)->replaceClass($stub, $name);
+        $model = str_replace('/', '\\', trim($model));
+        if (Str::startsWith($model, '\\')) {
+            return ltrim($model, '\\');
+        }
+
+        $rootNamespace = $this->laravel->getNamespace();
+        if (Str::startsWith($model, $rootNamespace)) {
+            return $model;
+        }
+        return $rootNamespace.(is_dir(app_path('Models')) ? 'Models\\' : '').$model;
     }
 
     /**
-     * Replace the model name (and its variable name) of the repository for the given stub.
+     * Get the fully qualified classes imported by the stub.
      *
-     * @param  string  $stub
-     * @param  string  $model
-     * @return $this
+     * @return array
      */
-    protected function replaceModelAndVar(&$stub, $model)
+    protected function importedClasses()
     {
-        $stub = str_replace('DummyModel', $model, str_replace('DummyModelVar', lcfirst($model), $stub));
-        return $this;
+        return [$this->model];
     }
 
     /**
-     * Replace the class name of the repository for the given stub.
+     * Get the replacements of the placeholders in the stub.
      *
-     * @param  string  $stub
      * @param  string  $name
-     * @return string
+     * @return array
      */
-    protected function replaceClass($stub, $name)
+    protected function stubReplacements($name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
-        return str_replace('DummyRepository', $class, $stub);
+        $model = class_basename($this->model);
+        $variable = lcfirst($model);
+
+        return array_merge($this->carveStubReplacements($name), [
+            'NamespacedDummyModel' => $this->model,
+            'DummyModelVar' => $variable === 'this' ? 'model' : $variable,
+            'DummyModel' => $model,
+        ]);
     }
 
     /**
-     * Get the root namespace for the class.
+     * Get the console command options.
      *
-     * @return string
+     * @return array
      */
-    protected function rootNamespace()
+    protected function getOptions()
     {
-        return config('whetstone.roots.repository', $this->laravel->getNamespace());
+        return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Overwrite the Repository if it already exists'],
+            ['model', 'm', InputOption::VALUE_REQUIRED, 'The model bound to the Repository'],
+        ];
     }
 }

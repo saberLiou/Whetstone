@@ -9,6 +9,20 @@ class CarveCommandTraitTest extends TestCase
 {
     use CarveCommandTrait;
 
+    /**
+     * The application that the trait resolves the application namespace from, as in a console command.
+     *
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $laravel;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->laravel = $this->app;
+    }
+
     public function testItPrependsTheConfiguredNamespaceWhenMissing()
     {
         $this->assertSame(
@@ -47,6 +61,16 @@ class CarveCommandTraitTest extends TestCase
         $this->assertSame(
             'Domain\\Support\\Domain\\StrHelper',
             $this->refineConflictNameForNamespace('Domain\\StrHelper', 'helper')
+        );
+    }
+
+    public function testItFallsBackToTheDefaultNamespaceWhenTheConfigKeyIsMissing()
+    {
+        config(['whetstone.roots' => ['service' => 'App'], 'whetstone.namespaces' => []]);
+
+        $this->assertSame(
+            'App\\Services\\UserService',
+            $this->refineConflictNameForNamespace('UserService', 'service')
         );
     }
 }

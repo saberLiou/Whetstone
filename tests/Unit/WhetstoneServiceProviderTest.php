@@ -12,11 +12,11 @@ class WhetstoneServiceProviderTest extends TestCase
     public function testItMergesTheDefaultConfig()
     {
         $this->assertSame([
-            'helper' => 'App',
-            'repository' => 'App',
-            'service' => 'App',
-            'presenter' => 'App',
-            'view_composer' => 'App',
+            'helper' => null,
+            'repository' => null,
+            'service' => null,
+            'presenter' => null,
+            'view_composer' => null,
         ], config('whetstone.roots'));
 
         $this->assertSame([

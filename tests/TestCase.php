@@ -69,6 +69,16 @@ abstract class TestCase extends Orchestra
     }
 
     /**
+     * Assert that nothing but the composer.json was written into the sandbox.
+     *
+     * @return void
+     */
+    protected function assertSandboxUntouched()
+    {
+        $this->assertSame(['composer.json'], array_values(array_diff(scandir($this->sandbox), ['.', '..'])));
+    }
+
+    /**
      * Replace the PSR-4 autoload map of the sandbox application's composer.json.
      *
      * @param  array  $psr4
@@ -79,5 +89,10 @@ abstract class TestCase extends Orchestra
         file_put_contents($this->sandbox.'/composer.json', json_encode([
             'autoload' => ['psr-4' => $psr4],
         ]));
+
+        // Application::getNamespace() caches the namespace it detected.
+        $namespace = new \ReflectionProperty($this->app, 'namespace');
+        $namespace->setAccessible(true);
+        $namespace->setValue($this->app, null);
     }
 }

@@ -6,15 +6,19 @@ return [
     |--------------------------------------------------------------------------
     | Default roots and namespaces for the stub classes
     |--------------------------------------------------------------------------
-    | Stub Classes will be carved by their root and namespace into their own directory.
+    | Stub Classes will be carved by their root and namespace into their own directory,
+    | which is resolved by the PSR-4 autoload map of the application's composer.json.
+    |
+    | A null root means the application namespace (e.g. "App"),
+    | and an empty namespace carves the classes directly under the root.
     */
 
     'roots' => [
-        'helper' => 'App',
-        'repository' => 'App',
-        'service' => 'App',
-        'presenter' => 'App',
-        'view_composer' => 'App',
+        'helper' => null,
+        'repository' => null,
+        'service' => null,
+        'presenter' => null,
+        'view_composer' => null,
     ],
 
     'namespaces' => [
